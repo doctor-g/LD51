@@ -24,5 +24,19 @@ func _enter_tree():
 			if j == 5:
 				box.selectable = false
 	
+	var path := Path.new()
+	path.translation = Vector3(-5,1,0)
+	add_child(path)
+	path.curve.add_point(Vector3.ZERO)
+	path.curve.add_point(Vector3(10,0,0))
+	var path_follow := PathFollow.new()
+	path.add_child(path_follow)
+	var sphere := CSGSphere.new()
+	sphere.radius = 0.5
+	path_follow.add_child(sphere)
+	
+	var tween := get_tree().create_tween()
+	# warning-ignore:return_value_discarded
+	tween.tween_property(path_follow, 'unit_offset', 1.0, 5.0)
 	
 	
