@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Level/Tile.gd" type="Script" id=1]
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.196078, 0.172549, 0.172549, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.5, 0.5, 0.5 )
+
+[node name="Tile" type="Spatial"]
+script = ExtResource( 1 )
+default_material = SubResource( 2 )
+hover_material = SubResource( 3 )
+
+[node name="StaticBody" type="StaticBody" parent="."]
+
+[node name="CollisionShape" type="CollisionShape" parent="StaticBody"]
+shape = SubResource( 1 )
+
+[node name="CSGBox" type="CSGBox" parent="."]
+width = 1.0
+height = 1.0
+depth = 1.0
+
+[connection signal="mouse_entered" from="StaticBody" to="." method="_on_StaticBody_mouse_entered"]
+[connection signal="mouse_exited" from="StaticBody" to="." method="_on_StaticBody_mouse_exited"]
