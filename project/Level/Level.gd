@@ -21,6 +21,8 @@ func _enter_tree():
 			var box : Spatial = _Tile.instance()
 			add_child(box)
 			box.translation = Vector3(lerp(min_x, max_x, float(i)/width), 0, lerp(min_z, max_z, float(j)/height))
+			if j == 5:
+				box.selectable = false
 	
 	
 	
