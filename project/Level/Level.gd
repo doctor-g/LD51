@@ -101,9 +101,6 @@ func _ready():
 	
 func _process(_delta):
 	if not Engine.is_editor_hint():
-		if Input.is_action_just_pressed("debug_blow_up_enemy") and _enemies.size()>0:
-			_enemies[0].damage(10000)
-			
 		if Input.is_action_just_released("switch_mode"):
 			if _mode == Mode.BEAM:
 				remove_child(_beam)
