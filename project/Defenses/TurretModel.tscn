@@ -1,10 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://Defenses/TurretModel.gd" type="Script" id=1]
 
 [sub_resource type="SpatialMaterial" id=1]
 flags_transparent = true
 albedo_color = Color( 1, 1, 1, 0.501961 )
+
+[sub_resource type="SpatialMaterial" id=2]
+albedo_color = Color( 0.0784314, 0.207843, 0.784314, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_color = Color( 0.364706, 0.372549, 0.462745, 1 )
 
 [node name="TurretModel" type="Spatial"]
 script = ExtResource( 1 )
@@ -15,9 +21,19 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 width = 0.5
 height = 1.0
 depth = 0.5
+material = SubResource( 2 )
 
 [node name="CSGCylinder" type="CSGCylinder" parent="CSGBox"]
 transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 0, 0, -0.25 )
 radius = 0.25
 height = 0.5
 sides = 16
+material = SubResource( 3 )
+
+[node name="Hole" type="CSGCylinder" parent="CSGBox"]
+transform = Transform( 1.91069e-15, -4.37114e-08, -1, -1, -4.37114e-08, 0, -4.37114e-08, 1, -4.37114e-08, 0, 0, -0.25 )
+operation = 2
+radius = 0.15
+height = 0.5
+sides = 16
+material = SubResource( 3 )
