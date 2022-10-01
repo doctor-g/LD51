@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Defenses/Turret.gd" type="Script" id=1]
 [ext_resource path="res://Defenses/TurretModel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Defenses/build.wav" type="AudioStream" id=3]
 
 [sub_resource type="SphereShape" id=1]
 radius = 3.0
@@ -32,6 +33,10 @@ direction = Vector3( 0, 0, -1 )
 spread = 5.0
 gravity = Vector3( 0, 0, 0 )
 initial_velocity = 10.0
+
+[node name="BuildSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 3 )
+autoplay = true
 
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area" to="." method="_on_Area_body_exited"]
