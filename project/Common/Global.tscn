@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Common/Global.gd" type="Script" id=1]
+
+[node name="Global" type="Node"]
+script = ExtResource( 1 )
+
+[node name="MeteorTimer" type="Timer" parent="."]
+wait_time = 10.0
+autostart = true
+
+[connection signal="timeout" from="MeteorTimer" to="." method="_on_MeteorTimer_timeout"]

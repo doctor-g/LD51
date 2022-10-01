@@ -37,6 +37,7 @@ const height := 11
 
 var _path := Path.new()
 var _preview_mesh : Spatial
+var _defenses := []
 
 
 func _enter_tree():
@@ -68,6 +69,9 @@ func _enter_tree():
 	
 
 func _ready():
+	# warning-ignore:return_value_discarded
+	Global.connect("meteor_timer_timeout", self, "_on_MeteorTimer_timeout")	
+	
 	# Put the path node in the upper-left corner 
 	# so that it will account from the _PATH coordinates.
 	#
@@ -116,3 +120,11 @@ func _on_Tile_clicked(tile:Spatial)->void:
 		PlayerStats.resources -= TURRET_COST
 		_preview_mesh.queue_free()
 		_preview_mesh = null
+		_defenses.append(turret)
+
+
+func _on_MeteorTimer_timeout()->void:
+	var index := randi() % _defenses.size()
+	var defense :Spatial = _defenses[index]
+	_defenses.remove(index)
+	defense.queue_free() # TODO: Make this more glorious.
