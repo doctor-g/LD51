@@ -211,19 +211,25 @@ func _on_Meteor_struck(meteor:Spatial, defense_index:int)->void:
 	meteor.queue_free()
 	_defenses.remove(defense_index)
 	defense.queue_free()
+	_spawn_shards(3, defense.global_translation)
 	
 	yield(get_tree().create_timer(1.0), "timeout")
 	explosion.queue_free()
 
 
 func _on_Sphere_destroyed(sphere:Spatial)->void:
-	for i in 3:
+	_spawn_shards(3, sphere.global_translation)
+	
+
+func _spawn_shards(count:int, location:Vector3)->void:
+	for i in count:
 		var shard : RigidBody = preload("res://Common/Shard.tscn").instance()
 		shard.name = "Shard"
 		_shards.add_child(shard)
-		shard.global_translation = sphere.global_translation + Vector3(0,0.5,0)
+		shard.global_translation = location + Vector3(0,0.5,0)
 		shard.rotation = Vector3(randf(),randf(),randf()) * TAU
 		shard.add_force(Vector3(1,1,0).rotated(Vector3.UP, randf()*TAU) * _SHARD_FORCE, Vector3.ZERO)
+
 
 
 func _on_Sphere_tree_exiting(sphere:Spatial)->void:
