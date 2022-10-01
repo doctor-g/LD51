@@ -3,7 +3,7 @@
 [ext_resource path="res://Level/Level.tscn" type="PackedScene" id=1]
 [ext_resource path="res://UI/HUD.tscn" type="PackedScene" id=2]
 
-[node name="World" type="Spatial"]
+[node name="World" type="Control"]
 
 [node name="Camera" type="Camera" parent="."]
 transform = Transform( 1, 0, 0, 0, 0.597513, 0.801859, 0, -0.801859, 0.597513, 0, 6.85718, 5.41004 )
