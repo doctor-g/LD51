@@ -48,7 +48,7 @@ func _enter_tree():
 				tile.selectable = false
 				
 	var base : Spatial = preload("res://Level/Base.tscn").instance()
-	base.translation= Vector3(0, 1, min_z-1)
+	base.translation= Vector3(0, 0, min_z-1)
 	add_child(base)
 	
 
@@ -56,12 +56,11 @@ func _ready():
 	var path := Path.new()
 	
 	# Put the path node in the upper-left corner 
-	# so that it will account from the _PATH coordinates
-	# and just high enough that the baseline of enemies is on top of the ground.
+	# so that it will account from the _PATH coordinates.
 	#
 	# warning-ignore:integer_division
 	# warning-ignore:integer_division	
-	path.translation = Vector3(-width/2, 1 ,-height/2)
+	path.translation = Vector3(-width/2, 0 ,-height/2)
 	for point in _PATH:
 		path.curve.add_point(Vector3(point.x, 0, point.y))
 	add_child(path)

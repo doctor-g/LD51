@@ -33,7 +33,6 @@ func _on_StaticBody_input_event(_camera, event, _position, _normal, _shape_idx):
 		and PlayerStats.resources >= TURRET_COST:
 		
 		var turret : Spatial = preload("res://Defenses/Turret.tscn").instance()
-		turret.translate(Vector3(0,0.5,0))
 		add_child(turret)
 		_defense = turret
 		PlayerStats.resources -= TURRET_COST
