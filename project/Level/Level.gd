@@ -36,6 +36,8 @@ const width := 11
 const height := 11
 
 var _path := Path.new()
+var _preview_mesh : Spatial
+
 
 func _enter_tree():
 	# warning-ignore:integer_division
@@ -51,6 +53,14 @@ func _enter_tree():
 	#		print(tile.translation)
 			if _PATH.find(Vector2(i,j)) >= 0:
 				tile.selectable = false
+				
+			# warning-ignore:return_value_discarded
+			tile.connect("mouse_entered", self, "_on_Tile_mouse_entered", [tile])
+			# warning-ignore:return_value_discarded
+			tile.connect("mouse_exited", self, "_on_Tile_mouse_exited", [tile])
+			# warning-ignore:return_value_discarded			
+			tile.connect("clicked", self, "_on_Tile_clicked", [tile])
+			
 				
 	var base : Spatial = preload("res://Level/Base.tscn").instance()
 	base.translation= Vector3(0, 0, min_z-1)
@@ -78,3 +88,31 @@ func _on_SpawnTimer_timeout():
 	var tween := get_tree().create_tween()
 	# warning-ignore:return_value_discarded
 	tween.tween_property(path_follow, 'unit_offset', 1.0, 5.0)
+
+
+func _on_Tile_mouse_entered(tile:Spatial)->void:
+	tile.hovered = true
+	
+	if _preview_mesh==null:
+		_preview_mesh = preload("res://Defenses/TurretModel.tscn").instance()
+		_preview_mesh.preview = true
+	
+	tile.add_preview(_preview_mesh)
+
+
+func _on_Tile_mouse_exited(tile:Spatial)->void:
+	if is_instance_valid(_preview_mesh) and _preview_mesh.get_parent():
+		tile.remove_preview()
+	tile.hovered = false
+
+
+func _on_Tile_clicked(tile:Spatial)->void:
+	var TURRET_COST := 300
+	# TODO: Extract cost
+	if not tile.has_defense() and PlayerStats.resources > TURRET_COST:
+		var turret : Spatial = preload("res://Defenses/Turret.tscn").instance()
+		turret.rotation = _preview_mesh.rotation
+		tile.add_defense(turret)
+		PlayerStats.resources -= TURRET_COST
+		_preview_mesh.queue_free()
+		_preview_mesh = null

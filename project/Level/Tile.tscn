@@ -6,6 +6,8 @@
 albedo_color = Color( 0.196078, 0.172549, 0.172549, 1 )
 
 [sub_resource type="SpatialMaterial" id=3]
+flags_transparent = true
+albedo_color = Color( 0.447059, 0.447059, 0.447059, 1 )
 
 [sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 0.439216, 0.188235, 0.0627451, 1 )
@@ -30,6 +32,10 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
 width = 1.0
 height = 1.0
 depth = 1.0
+
+[node name="Defense" type="Spatial" parent="."]
+
+[node name="Preview" type="Spatial" parent="."]
 
 [connection signal="input_event" from="StaticBody" to="." method="_on_StaticBody_input_event"]
 [connection signal="mouse_entered" from="StaticBody" to="." method="_on_StaticBody_mouse_entered"]
