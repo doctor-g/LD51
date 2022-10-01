@@ -113,11 +113,11 @@ func _on_Tile_mouse_exited(tile:Spatial)->void:
 func _on_Tile_clicked(tile:Spatial)->void:
 	var TURRET_COST := 300
 	# TODO: Extract cost
-	if not tile.has_defense() and PlayerStats.resources > TURRET_COST:
+	if not tile.has_defense() and Global.resources > TURRET_COST:
 		var turret : Spatial = preload("res://Defenses/Turret.tscn").instance()
 		turret.rotation = _preview_mesh.rotation
 		tile.add_defense(turret)
-		PlayerStats.resources -= TURRET_COST
+		Global.resources -= TURRET_COST
 		_preview_mesh.queue_free()
 		_preview_mesh = null
 		_defenses.append(turret)

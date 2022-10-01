@@ -13,7 +13,7 @@ func damage(amount:float)->void:
 	# so we have to separately keep track of whether it was
 	# already destroyed.
 	if health <= 0 and not _destroyed:
-		PlayerStats.score += points
-		PlayerStats.resources += resources
+		Global.score += points
+		Global.resources += resources
 		_destroyed = true
 		queue_free()

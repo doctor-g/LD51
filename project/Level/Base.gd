@@ -1,10 +1,10 @@
 extends Spatial
 
 func _on_Area_body_entered(body):
-	PlayerStats.base_health -= 1
+	Global.base_health -= 1
 	body.queue_free()
 	
-	if PlayerStats.base_health <= 0:
+	if Global.base_health <= 0:
 		var loss_control := preload("res://UI/LossControl.tscn").instance()
 		add_child(loss_control)
 		get_tree().paused = true
