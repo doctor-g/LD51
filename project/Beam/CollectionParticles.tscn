@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=2]
+
+[sub_resource type="SphereMesh" id=1]
+radius = 0.05
+height = 0.05
+radial_segments = 16
+rings = 8
+
+[sub_resource type="Gradient" id=2]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0.0862745 )
+
+[node name="CPUParticles" type="CPUParticles"]
+explosiveness = 0.85
+mesh = SubResource( 1 )
+emission_shape = 1
+emission_sphere_radius = 0.2
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
+initial_velocity_random = 0.5
+color_ramp = SubResource( 2 )

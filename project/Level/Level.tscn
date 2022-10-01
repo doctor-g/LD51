@@ -1,6 +1,9 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Level/Level.gd" type="Script" id=1]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 8, 3, 7 )
 
 [node name="Level" type="Spatial"]
 script = ExtResource( 1 )
@@ -9,4 +12,16 @@ script = ExtResource( 1 )
 wait_time = 3.0
 autostart = true
 
+[node name="Tiles" type="Spatial" parent="."]
+
+[node name="Shards" type="Spatial" parent="."]
+
+[node name="LiveShardArea" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape" type="CollisionShape" parent="LiveShardArea"]
+shape = SubResource( 1 )
+
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_SpawnTimer_timeout"]
+[connection signal="body_exited" from="LiveShardArea" to="." method="_on_LiveShardArea_body_exited"]

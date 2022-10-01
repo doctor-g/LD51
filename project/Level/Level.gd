@@ -1,9 +1,12 @@
 extends Spatial
 tool
 
+enum Mode { BEAM, DEFENSE }
+
 const _Tile := preload("res://Level/Tile.tscn")
 
 const _ENEMY_SPAWN_POINT := Vector2(-1,9)
+const _SHARD_FORCE := 100
 
 const _PATH := [
 	Vector2(0,9),
@@ -38,6 +41,15 @@ const height := 11
 var _path := Path.new()
 var _preview_mesh : Spatial
 var _defenses := []
+var _enemies := []
+
+# Single-selection model for the tile
+var _tile : Spatial
+var _mode = Mode.DEFENSE
+var _mouse_pos : Vector3
+
+onready var _shards := $Shards
+onready var _beam := preload("res://Beam/Beam.tscn").instance()
 
 
 func _enter_tree():
@@ -46,10 +58,12 @@ func _enter_tree():
 	# warning-ignore:integer_division
 	var min_z := -height / 2
 	
+	var tiles_node := $Tiles
+	
 	for i in width:
 		for j in height:
 			var tile : Spatial = _Tile.instance()
-			add_child(tile)
+			tiles_node.add_child(tile)
 			tile.translation = Vector3(min_x+i, 0, min_z+j)
 	#		print(tile.translation)
 			if _PATH.find(Vector2(i,j)) >= 0:
@@ -59,8 +73,10 @@ func _enter_tree():
 			tile.connect("mouse_entered", self, "_on_Tile_mouse_entered", [tile])
 			# warning-ignore:return_value_discarded
 			tile.connect("mouse_exited", self, "_on_Tile_mouse_exited", [tile])
-			# warning-ignore:return_value_discarded			
+			# warning-ignore:return_value_discarded
 			tile.connect("clicked", self, "_on_Tile_clicked", [tile])
+			# warning-ignore:return_value_discarded
+			tile.connect("mouse_moved", self, "_on_Tile_mouse_moved")
 			
 				
 	var base : Spatial = preload("res://Level/Base.tscn").instance()
@@ -81,6 +97,25 @@ func _ready():
 	for point in _PATH:
 		_path.curve.add_point(Vector3(point.x, 0, point.y))
 	add_child(_path)
+	
+	
+func _process(_delta):
+	if not Engine.is_editor_hint():
+		if Input.is_action_just_pressed("debug_blow_up_enemy") and _enemies.size()>0:
+			_enemies[0].damage(10000)
+			
+		if Input.is_action_just_released("switch_mode"):
+			if _mode == Mode.BEAM:
+				remove_child(_beam)
+				_mode = Mode.DEFENSE
+				if _tile and not _tile.has_preview() and not _tile.has_defense():
+					_show_preview(_tile)
+			else:
+				if _tile:
+					_stop_hover(_tile)
+				add_child(_beam)
+				_beam.global_translation = _mouse_pos
+				_mode = Mode.BEAM
 
 
 func _on_SpawnTimer_timeout():
@@ -88,6 +123,11 @@ func _on_SpawnTimer_timeout():
 	_path.add_child(path_follow)
 	var sphere :Spatial = preload("res://Enemies/Sphere.tscn").instance()
 	path_follow.add_child(sphere)
+	_enemies.append(sphere)
+	# warning-ignore:return_value_discarded
+	sphere.connect("destroyed", self, "_on_Sphere_destroyed", [sphere])
+	# warning-ignore:return_value_discarded
+	sphere.connect("tree_exiting", self, "_on_Sphere_tree_exiting", [sphere])
 
 	var tween := get_tree().create_tween()
 	# warning-ignore:return_value_discarded
@@ -95,22 +135,36 @@ func _on_SpawnTimer_timeout():
 
 
 func _on_Tile_mouse_entered(tile:Spatial)->void:
+	_tile = tile
+	if _mode==Mode.DEFENSE:
+		_show_preview(tile)
+
+
+func _show_preview(tile:Spatial)->void:
 	tile.hovered = true
-	
+		
 	if _preview_mesh==null:
 		_preview_mesh = preload("res://Defenses/TurretModel.tscn").instance()
 		_preview_mesh.preview = true
-	
+		
 	tile.add_preview(_preview_mesh)
 
 
 func _on_Tile_mouse_exited(tile:Spatial)->void:
+	_stop_hover(tile)
+	_tile = null
+	
+	
+func _stop_hover(tile:Spatial):
 	if is_instance_valid(_preview_mesh) and _preview_mesh.get_parent():
 		tile.remove_preview()
 	tile.hovered = false
 
 
 func _on_Tile_clicked(tile:Spatial)->void:
+	if _mode != Mode.DEFENSE:
+		return
+	
 	var TURRET_COST := 300
 	# TODO: Extract cost
 	if not tile.has_defense() and Global.resources > TURRET_COST:
@@ -146,3 +200,28 @@ func _on_Meteor_struck(meteor:Spatial, defense_index:int)->void:
 	var defense :Spatial = _defenses[defense_index]
 	_defenses.remove(defense_index)
 	defense.queue_free()
+
+
+func _on_Sphere_destroyed(sphere:Spatial)->void:
+	for i in 3:
+		var shard : RigidBody = preload("res://Common/Shard.tscn").instance()
+		shard.name = "Shard"
+		_shards.add_child(shard)
+		shard.global_translation = sphere.global_translation + Vector3(0,0.5,0)
+		shard.rotation = Vector3(randf(),randf(),randf()) * TAU
+		shard.add_force(Vector3(1,1,0).rotated(Vector3.UP, randf()*TAU) * _SHARD_FORCE, Vector3.ZERO)
+
+
+func _on_Sphere_tree_exiting(sphere:Spatial)->void:
+	_enemies.remove(_enemies.find(sphere))
+
+
+func _on_LiveShardArea_body_exited(body:PhysicsBody):
+	if body is Shard:
+		body.queue_free()
+
+
+func _on_Tile_mouse_moved(position:Vector3)->void:
+	_mouse_pos = position
+	if _mode==Mode.BEAM:
+		_beam.translation = position

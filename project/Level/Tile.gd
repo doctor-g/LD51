@@ -3,6 +3,7 @@ extends Spatial
 signal mouse_entered
 signal mouse_exited
 signal clicked
+signal mouse_moved(position)
 
 const TURRET_COST := 300
 
@@ -35,12 +36,19 @@ func add_preview(preview:Spatial)->void:
 
 
 func remove_preview()->void:
-	assert(_preview_slot.get_child_count()==1)
-	_preview_slot.remove_child(_preview_slot.get_child(0))
+	# Normally, this method should not be called unless this is a safe
+	# call, but with the addition of beams, the state management
+	# got a little weird.
+	if _preview_slot.get_child_count() > 0:
+		_preview_slot.remove_child(_preview_slot.get_child(0))
 
 
 func has_defense()->bool:
 	return _defense_slot.get_child_count() > 0
+
+
+func has_preview()->bool:
+	return _preview_slot.get_child_count() > 0
 
 
 func _on_StaticBody_mouse_entered():
@@ -58,8 +66,12 @@ func _set_hovered(value:bool)->void:
 	_box.material = hover_material if hovered else default_material
 
 
-func _on_StaticBody_input_event(_camera, event, _position, _normal, _shape_idx):
+func _on_StaticBody_input_event(_camera, event, position, _normal, _shape_idx):
+	if event is InputEventMouseMotion:
+		emit_signal("mouse_moved", position)
+		
 	if event is InputEventMouseButton \
+		and event.button_index == BUTTON_LEFT\
 		and event.pressed \
 		and selectable:
 		
