@@ -2,6 +2,9 @@ extends Spatial
 tool
 
 const _Tile := preload("res://Level/Tile.tscn")
+
+const _ENEMY_SPAWN_POINT := Vector2(-1,9)
+
 const _PATH := [
 	Vector2(0,9),
 	Vector2(1,9),
@@ -32,6 +35,8 @@ const _PATH := [
 const width := 11
 const height := 11
 
+var _path := Path.new()
+
 func _enter_tree():
 	# warning-ignore:integer_division
 	var min_x := -width / 2
@@ -53,24 +58,23 @@ func _enter_tree():
 	
 
 func _ready():
-	var path := Path.new()
-	
 	# Put the path node in the upper-left corner 
 	# so that it will account from the _PATH coordinates.
 	#
 	# warning-ignore:integer_division
 	# warning-ignore:integer_division	
-	path.translation = Vector3(-width/2, 0 ,-height/2)
+	_path.translation = Vector3(-width/2, 0 ,-height/2)
 	for point in _PATH:
-		path.curve.add_point(Vector3(point.x, 0, point.y))
-	add_child(path)
+		_path.curve.add_point(Vector3(point.x, 0, point.y))
+	add_child(_path)
+
+
+func _on_SpawnTimer_timeout():
 	var path_follow := PathFollow.new()
-	path.add_child(path_follow)
+	_path.add_child(path_follow)
 	var sphere :Spatial = preload("res://Enemies/Sphere.tscn").instance()
 	path_follow.add_child(sphere)
-	
+
 	var tween := get_tree().create_tween()
 	# warning-ignore:return_value_discarded
 	tween.tween_property(path_follow, 'unit_offset', 1.0, 5.0)
-	
-	
