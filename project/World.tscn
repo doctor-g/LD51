@@ -25,6 +25,7 @@ light_energy = 0.5
 shadow_enabled = true
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
+pause_mode = 2
 stream = ExtResource( 4 )
 autoplay = true
 bus = "Music"
