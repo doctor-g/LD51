@@ -1,11 +1,23 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://Beam/Beam.gd" type="Script" id=1]
 [ext_resource path="res://Beam/beam.wav" type="AudioStream" id=2]
 
-[sub_resource type="SpatialMaterial" id=1]
-flags_transparent = true
-albedo_color = Color( 1, 0.913725, 0, 0.392157 )
+[sub_resource type="Shader" id=3]
+code = "shader_type spatial;
+
+const float anim_speed = 5.0;
+
+void fragment() {
+	vec4 world_vertex = CAMERA_MATRIX * vec4(VERTEX, 1.0);
+	float intensity = 0.5 +  abs(sin(world_vertex.y - anim_speed*TIME));
+	ALBEDO = vec3(intensity,intensity,intensity/3.0);
+	ALPHA = 0.5;
+	//ALPHA = 0.25 + 0.75*abs(sin(world_vertex.y - 3.0*TIME));
+}"
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = SubResource( 3 )
 
 [sub_resource type="CylinderShape" id=2]
 height = 10.0
@@ -19,7 +31,7 @@ script = ExtResource( 1 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
 radius = 1.5
 height = 10.0
-material = SubResource( 1 )
+material = SubResource( 4 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 0 )
