@@ -1,12 +1,28 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=4 format=2]
 
-[sub_resource type="SphereShape" id=1]
-radius = 0.5
+[sub_resource type="OpenSimplexNoise" id=3]
+
+[sub_resource type="NoiseTexture" id=1]
+width = 32
+height = 32
+seamless = true
+as_normalmap = true
+noise = SubResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=2]
+flags_transparent = true
+albedo_color = Color( 1, 0.541176, 0, 0.517647 )
+normal_enabled = true
+normal_scale = 16.0
+normal_texture = SubResource( 1 )
 
 [node name="Meteor" type="Spatial"]
 
 [node name="CSGSphere" type="CSGSphere" parent="."]
 radius = 0.5
+material = SubResource( 2 )
 
-[node name="CollisionShape" type="CollisionShape" parent="."]
-shape = SubResource( 1 )
+[node name="Aura" type="CSGSphere" parent="."]
+transform = Transform( 0.5, 0, -0.866025, 0, 1, 0, 0.866025, 0, 0.5, 0, 0, 0 )
+radius = 0.65
+material = SubResource( 2 )

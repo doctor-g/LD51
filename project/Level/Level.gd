@@ -7,6 +7,7 @@ const _Tile := preload("res://Level/Tile.tscn")
 
 const _ENEMY_SPAWN_POINT := Vector2(-1,9)
 const _SHARD_FORCE := 100
+const _METEOR_FALL_DURATION := 1.2
 
 const _PATH := [
 	Vector2(0,9),
@@ -113,6 +114,10 @@ func _process(_delta):
 				add_child(_beam)
 				_beam.global_translation = _mouse_pos
 				_mode = Mode.BEAM
+		
+		elif Input.is_action_just_pressed("meteor"):
+			if _defenses.size()>0:
+				_launch_meteor()
 
 
 func _on_SpawnTimer_timeout():
@@ -176,27 +181,39 @@ func _on_Tile_clicked(tile:Spatial)->void:
 
 func _on_MeteorTimer_timeout()->void:
 	if _defenses.size()>0:
-		var index := randi() % _defenses.size()
-		var defense :Spatial = _defenses[index]
+		_launch_meteor()
 		
-		var meteor : Spatial = preload("res://Meteor/Meteor.tscn").instance()
-		meteor.translation = Vector3(0,20,0)
-		add_child(meteor)
-		
-		# warning-ignore:return_value_discarded
-		var tween := get_tree().create_tween()
-		tween.tween_property(meteor, 'global_translation', defense.global_translation, 1)
-		# warning-ignore:return_value_discarded
-		tween.set_ease(Tween.EASE_OUT)
-		# warning-ignore:return_value_discarded
-		tween.tween_callback(self, '_on_Meteor_struck', [meteor,index])
+
+func _launch_meteor()->void:
+	var index := randi() % _defenses.size()
+	var defense :Spatial = _defenses[index]
+	
+	var meteor : Spatial = preload("res://Meteor/Meteor.tscn").instance()
+	meteor.translation = Vector3(0,7,0)
+	add_child(meteor)
+	
+	var tween := get_tree().create_tween()
+	# warning-ignore:return_value_discarded
+	tween.tween_property(meteor, 'global_translation', defense.global_translation, _METEOR_FALL_DURATION)\
+		.set_trans(Tween.TRANS_CUBIC)\
+		.set_ease(Tween.EASE_IN)
+	# warning-ignore:return_value_discarded
+	tween.tween_callback(self, '_on_Meteor_struck', [meteor,index])
 
 
 func _on_Meteor_struck(meteor:Spatial, defense_index:int)->void:
-	meteor.queue_free()
 	var defense :Spatial = _defenses[defense_index]
+	
+	var explosion :CPUParticles= preload("res://Meteor/DefenseExplosion.tscn").instance()
+	add_child(explosion)
+	explosion.global_translation = defense.global_translation
+	explosion.one_shot = true
+	meteor.queue_free()
 	_defenses.remove(defense_index)
 	defense.queue_free()
+	
+	yield(get_tree().create_timer(1.0), "timeout")
+	explosion.queue_free()
 
 
 func _on_Sphere_destroyed(sphere:Spatial)->void:

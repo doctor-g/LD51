@@ -1,0 +1,31 @@
+[gd_scene load_steps=5 format=2]
+
+[sub_resource type="SpatialMaterial" id=3]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id=1]
+material = SubResource( 3 )
+radius = 0.25
+height = 0.5
+radial_segments = 16
+rings = 8
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0.00332226, 0.995454 ), 0.0, 0.0, 0, 0, Vector2( 0.737542, 0.659091 ), -1.47764, -1.47764, 0, 0, Vector2( 0.976744, 0.0318182 ), -3.24043, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=2]
+offsets = PoolRealArray( 0, 0.586331, 1 )
+colors = PoolColorArray( 1, 0.916992, 0, 1, 1, 0.411765, 0.0196078, 1, 0.315918, 0.177499, 0.116001, 1 )
+
+[node name="DefenseExplosion" type="CPUParticles"]
+amount = 40
+lifetime = 0.8
+explosiveness = 0.9
+mesh = SubResource( 1 )
+emission_shape = 1
+emission_sphere_radius = 0.5
+direction = Vector3( 0, 1, 0 )
+spread = 15.0
+initial_velocity = 3.0
+scale_amount_curve = SubResource( 4 )
+color_ramp = SubResource( 2 )
