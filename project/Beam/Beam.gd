@@ -6,10 +6,13 @@ const _Particles := preload("res://Beam/CollectionParticles.tscn")
 
 var _attracting_shards := []
 
+onready var _sound := $BeamSound
+
 func _on_Beam_body_entered(body:RigidBody):
 	if body is Shard and _attracting_shards.find(body)==-1:
 		_attracting_shards.append(body)
 		body.mode = RigidBody.MODE_KINEMATIC
+		_sound.play()
 
 
 func _on_Beam_body_exited(body:RigidBody):
@@ -17,6 +20,9 @@ func _on_Beam_body_exited(body:RigidBody):
 	if body is Shard and index != -1:
 		_attracting_shards.remove(index)
 		body.mode = RigidBody.MODE_RIGID
+	
+	if _attracting_shards.size()==0:
+		_sound.stop()
 
 
 func _physics_process(delta):
