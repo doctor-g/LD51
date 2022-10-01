@@ -124,7 +124,25 @@ func _on_Tile_clicked(tile:Spatial)->void:
 
 
 func _on_MeteorTimer_timeout()->void:
-	var index := randi() % _defenses.size()
-	var defense :Spatial = _defenses[index]
-	_defenses.remove(index)
-	defense.queue_free() # TODO: Make this more glorious.
+	if _defenses.size()>0:
+		var index := randi() % _defenses.size()
+		var defense :Spatial = _defenses[index]
+		
+		var meteor : Spatial = preload("res://Meteor/Meteor.tscn").instance()
+		meteor.translation = Vector3(0,20,0)
+		add_child(meteor)
+		
+		# warning-ignore:return_value_discarded
+		var tween := get_tree().create_tween()
+		tween.tween_property(meteor, 'global_translation', defense.global_translation, 1)
+		# warning-ignore:return_value_discarded
+		tween.set_ease(Tween.EASE_OUT)
+		# warning-ignore:return_value_discarded
+		tween.tween_callback(self, '_on_Meteor_struck', [meteor,index])
+
+
+func _on_Meteor_struck(meteor:Spatial, defense_index:int)->void:
+	meteor.queue_free()
+	var defense :Spatial = _defenses[defense_index]
+	_defenses.remove(defense_index)
+	defense.queue_free()
