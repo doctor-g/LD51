@@ -1,4 +1,6 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Meteor/explosion.wav" type="AudioStream" id=1]
 
 [sub_resource type="SpatialMaterial" id=3]
 vertex_color_use_as_albedo = true
@@ -29,3 +31,8 @@ spread = 15.0
 initial_velocity = 3.0
 scale_amount_curve = SubResource( 4 )
 color_ramp = SubResource( 2 )
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+autoplay = true
+bus = "SFX"
