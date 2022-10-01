@@ -10,7 +10,7 @@ var base_health :int
 onready var _meteor_timer := $MeteorTimer
 
 func reset():
-	_meteor_timer.wait_time = 10
+	_meteor_timer.start(10)
 	score = 0
 	resources = 1000
 	base_health = 3
