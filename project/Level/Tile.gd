@@ -1,5 +1,7 @@
 extends Spatial
 
+const TURRET_COST := 300
+
 export var selectable := true
 export(Material) var default_material : Material
 export(Material) var hover_material : Material
@@ -24,8 +26,14 @@ func _on_StaticBody_mouse_exited():
 
 
 func _on_StaticBody_input_event(_camera, event, _position, _normal, _shape_idx):
-	if event is InputEventMouseButton and event.pressed and _defense==null:
+	if event is InputEventMouseButton \
+		and event.pressed \
+		and _defense==null \
+		and selectable \
+		and PlayerStats.resources >= TURRET_COST:
+		
 		var turret : Spatial = preload("res://Defenses/Turret.tscn").instance()
 		turret.translate(Vector3(0,0.5,0))
 		add_child(turret)
 		_defense = turret
+		PlayerStats.resources -= TURRET_COST
