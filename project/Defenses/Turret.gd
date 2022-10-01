@@ -2,6 +2,8 @@ extends Spatial
 
 var _tracked_enemy : Spatial
 
+onready var _particles := $CPUParticles
+
 
 func _physics_process(_delta):
 	if _tracked_enemy:
@@ -13,8 +15,10 @@ func _physics_process(_delta):
 
 func _on_Area_body_entered(body):
 	_tracked_enemy = body
-	
+	_particles.emitting = true
+
 
 func _on_Area_body_exited(body):
 	if body==_tracked_enemy:
 		_tracked_enemy = null
+		_particles.emitting = false

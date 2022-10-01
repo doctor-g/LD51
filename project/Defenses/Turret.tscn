@@ -1,9 +1,12 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://Defenses/Turret.gd" type="Script" id=1]
 
 [sub_resource type="SphereShape" id=1]
 radius = 3.0
+
+[sub_resource type="CubeMesh" id=2]
+size = Vector3( 0.1, 0.1, 0.1 )
 
 [node name="Turret" type="Spatial"]
 script = ExtResource( 1 )
@@ -27,6 +30,17 @@ input_ray_pickable = false
 
 [node name="CollisionShape" type="CollisionShape" parent="Area"]
 shape = SubResource( 1 )
+
+[node name="CPUParticles" type="CPUParticles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.5 )
+emitting = false
+amount = 10
+local_coords = false
+mesh = SubResource( 2 )
+direction = Vector3( 0, 0, -1 )
+spread = 5.0
+gravity = Vector3( 0, 0, 0 )
+initial_velocity = 10.0
 
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
 [connection signal="body_exited" from="Area" to="." method="_on_Area_body_exited"]
