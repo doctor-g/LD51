@@ -27,6 +27,7 @@ shape = SubResource( 2 )
 
 [node name="BeamSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource( 2 )
+volume_db = 6.0
 bus = "SFX"
 
 [connection signal="body_entered" from="." to="." method="_on_Beam_body_entered"]
