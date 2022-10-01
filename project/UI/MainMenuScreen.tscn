@@ -1,0 +1,76 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://UI/game.theme" type="Theme" id=1]
+[ext_resource path="res://UI/SpaceMono-Regular.ttf" type="DynamicFontData" id=2]
+[ext_resource path="res://UI/MainMenuScreen.gd" type="Script" id=3]
+[ext_resource path="res://UI/menu.ogg" type="AudioStream" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 64
+use_filter = true
+font_data = ExtResource( 2 )
+
+[sub_resource type="DynamicFont" id=2]
+use_filter = true
+font_data = ExtResource( 2 )
+
+[node name="MainMenu" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 3 )
+
+[node name="Background" type="ColorRect" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+color = Color( 0.0862745, 0.141176, 0.215686, 1 )
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+anchor_right = 1.0
+anchor_bottom = 1.0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+margin_left = 257.0
+margin_top = 131.0
+margin_right = 767.0
+margin_bottom = 469.0
+
+[node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_right = 510.0
+margin_bottom = 96.0
+custom_fonts/font = SubResource( 1 )
+text = "Blocktower"
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+margin_top = 100.0
+margin_right = 510.0
+margin_bottom = 292.0
+text = "Instructions:
+Place turrets to defend your base.
+Beam up resources.
+Use space to switch input modes.
+"
+
+[node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer"]
+margin_top = 296.0
+margin_right = 510.0
+margin_bottom = 338.0
+text = "Let's Do This"
+
+[node name="BottomLabel" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -512.0
+margin_top = -24.0
+margin_right = 512.0
+custom_fonts/font = SubResource( 2 )
+text = "©2022 Paul Gestwicki. Made for Ludum Dare 51. Theme: \"Every 10 Seconds\"."
+align = 1
+
+[node name="Music" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 5 )
+bus = "Music"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
