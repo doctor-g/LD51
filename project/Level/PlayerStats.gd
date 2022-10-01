@@ -1,4 +1,5 @@
 extends Node
 
-var score : int = 0 
-var resources : int = 1000
+var score := 0 
+var resources := 1000
+var base_health := 3
