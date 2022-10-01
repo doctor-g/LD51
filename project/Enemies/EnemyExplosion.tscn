@@ -1,0 +1,40 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Enemies/enemy_explosion.wav" type="AudioStream" id=1]
+
+[sub_resource type="SpatialMaterial" id=1]
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id=2]
+material = SubResource( 1 )
+radius = 0.5
+height = 1.0
+radial_segments = 16
+rings = 8
+
+[sub_resource type="Curve" id=3]
+_data = [ Vector2( 0, 1 ), 0.0, 0.0, 0, 0, Vector2( 0.784053, 0.59941 ), -1.40155, -1.40155, 0, 0, Vector2( 1, 0 ), -4.4723, 0.0, 0, 0 ]
+
+[sub_resource type="Gradient" id=4]
+offsets = PoolRealArray( 0, 0.597122, 1 )
+colors = PoolColorArray( 0.959413, 1, 0.0234375, 1, 0.873281, 0.491633, 0.0682251, 1, 0.1975, 0.15358, 0.0887208, 1 )
+
+[node name="EnemyExplosion" type="CPUParticles"]
+amount = 20
+explosiveness = 0.9
+mesh = SubResource( 2 )
+emission_shape = 1
+emission_sphere_radius = 0.25
+direction = Vector3( 0, 1, 0 )
+spread = 15.0
+initial_velocity = 4.0
+initial_velocity_random = 0.25
+scale_amount_curve = SubResource( 3 )
+color_ramp = SubResource( 4 )
+hue_variation = 0.05
+hue_variation_random = 0.1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource( 1 )
+autoplay = true
+bus = "SFX"
