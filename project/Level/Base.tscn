@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://Level/Base.gd" type="Script" id=1]
 [ext_resource path="res://Level/base_hit.wav" type="AudioStream" id=2]
@@ -10,6 +10,37 @@ albedo_color = Color( 0.364706, 0.372549, 0.462745, 1 )
 [sub_resource type="CylinderShape" id=1]
 height = 0.25
 radius = 2.0
+
+[sub_resource type="Animation" id=3]
+resource_name = "Hit"
+length = 0.4
+tracks/0/type = "value"
+tracks/0/path = NodePath("CSGCylinder:material:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.2, 0.4 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 0.0784314, 0.207843, 0.784314, 1 ), Color( 1, 1, 1, 1 ), Color( 0.0784314, 0.207843, 0.784314, 1 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("CSGCylinder:material:albedo_color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Color( 0.0784314, 0.207843, 0.784314, 1 ) ]
+}
 
 [node name="Base" type="Spatial"]
 script = ExtResource( 1 )
@@ -43,5 +74,10 @@ shape = SubResource( 1 )
 pause_mode = 2
 stream = ExtResource( 2 )
 bus = "SFX"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+pause_mode = 2
+anims/Hit = SubResource( 3 )
+anims/RESET = SubResource( 4 )
 
 [connection signal="body_entered" from="Area" to="." method="_on_Area_body_entered"]
