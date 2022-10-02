@@ -177,6 +177,23 @@ func _on_Tile_clicked(tile:Spatial)->void:
 		_preview_mesh.queue_free()
 		_preview_mesh = null
 		_defenses.append(turret)
+		
+		# warning-ignore:return_value_discarded
+		turret.connect("fired", self, "_on_Turret_fired")
+		
+
+func _on_Turret_fired(bullet:Spatial)->void:
+	# warning-ignore:return_value_discarded
+	bullet.connect("struck_enemy", self, "_on_Bullet_struck_enemy")
+
+
+func _on_Bullet_struck_enemy(position:Vector3)->void:
+	var particles :CPUParticles = preload("res://Defenses/BulletImpactParticles.tscn").instance()
+	add_child(particles)
+	particles.one_shot = true
+	particles.global_translation = position
+	yield(get_tree().create_timer(1), "timeout")
+	particles.queue_free()
 
 
 func _on_MeteorTimer_timeout()->void:

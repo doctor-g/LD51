@@ -1,9 +1,10 @@
 extends KinematicBody
 
+signal struck_enemy
+
 export var damage := 10
 
 const _SPEED := 10
-
 
 
 func _physics_process(delta):
@@ -11,6 +12,7 @@ func _physics_process(delta):
 	var collision := move_and_collide(velocity*delta)
 	if collision:
 		collision.collider.damage(damage)
+		emit_signal("struck_enemy", collision.position)
 		queue_free()
 
 

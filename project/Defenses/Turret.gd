@@ -1,5 +1,7 @@
 extends Spatial
 
+signal fired(bullet)
+
 export var dps := 20.0
 
 # Bullets per second
@@ -42,6 +44,7 @@ func _shoot()->void:
 	bullet.set_as_toplevel(true)
 	_play_shooting_sound()
 	_shot_timer.start(1.0/firing_rate)
+	emit_signal("fired", bullet)
 
 
 func _on_Area_body_exited(body):
