@@ -126,10 +126,6 @@ func _process(_delta):
 				add_child(_beam)
 				_beam.global_translation = _mouse_pos
 				_mode = Mode.BEAM
-		
-		elif Input.is_action_just_pressed("meteor"):
-			if _defenses.size()>0:
-				_launch_meteor()
 
 
 func _on_Base_destroyed()->void:
