@@ -4,7 +4,7 @@ signal struck_enemy
 
 export var damage := 10
 
-const _SPEED := 10
+const _SPEED := 20
 
 
 func _physics_process(delta):
