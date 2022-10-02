@@ -31,36 +31,36 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
-margin_left = 257.0
+margin_left = 204.0
 margin_top = 108.0
-margin_right = 767.0
+margin_right = 819.0
 margin_bottom = 492.0
 
 [node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer"]
-margin_right = 510.0
+margin_right = 615.0
 margin_bottom = 96.0
 custom_fonts/font = SubResource( 1 )
 text = "Base Defense"
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_top = 100.0
-margin_right = 510.0
+margin_right = 615.0
 margin_bottom = 292.0
 text = "Instructions:
 Place turrets to defend your base.
 Beam up resources.
-Use space to switch input modes.
+Use space or mouse wheel to switch modes.
 "
 
 [node name="PlayButton" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 296.0
-margin_right = 510.0
+margin_right = 615.0
 margin_bottom = 338.0
 text = "Play"
 
 [node name="OptionsButton" type="Button" parent="CenterContainer/VBoxContainer"]
 margin_top = 342.0
-margin_right = 510.0
+margin_right = 615.0
 margin_bottom = 384.0
 text = "Options"
 
@@ -70,10 +70,11 @@ anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
 margin_left = -512.0
-margin_top = -24.0
+margin_top = -51.0
 margin_right = 512.0
 custom_fonts/font = SubResource( 2 )
-text = "©2022 Paul Gestwicki. Made for Ludum Dare 51. Theme: \"Every 10 Seconds\"."
+text = "Made for Ludum Dare 51: \"Every 10 Seconds\".
+©2022 Paul Gestwicki — https://github.com/doctor-g/LD51"
 align = 1
 
 [node name="Music" type="AudioStreamPlayer" parent="."]
