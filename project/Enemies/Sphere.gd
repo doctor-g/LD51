@@ -5,7 +5,6 @@ signal destroyed(position)
 export var max_health := 100.0
 export var health := 100.0
 export var points := 100
-export var resources := 100
 
 var _destroyed := false
 
@@ -21,7 +20,6 @@ func damage(amount:float)->void:
 	# already destroyed.
 	if health <= 0 and not _destroyed:
 		Global.score += points
-		Global.resources += resources
 		_destroyed = true
 		emit_signal("destroyed")
 		
