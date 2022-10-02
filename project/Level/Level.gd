@@ -30,14 +30,12 @@ const _PATH := [
 	Vector2(7,5),
 	Vector2(6,5),
 	Vector2(5,5),
-	
 	Vector2(4,5),
 	Vector2(3,5),
 	Vector2(3,4),
 	Vector2(3,3),
 	Vector2(4,3),
 	Vector2(5,3),
-	
 	Vector2(5,2),
 	Vector2(5,1),
 	Vector2(5,0),
