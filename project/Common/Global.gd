@@ -4,7 +4,7 @@ const DEFAULT_RESOURCES := 1000
 
 signal meteor_timer_timeout
 
-var time_to_impact : float setget ,_get_time_to_impact
+var time_to_impact : float = 10.0 setget ,_get_time_to_impact
 var score : int = 0
 var resources : int = DEFAULT_RESOURCES
 var base_health :int 

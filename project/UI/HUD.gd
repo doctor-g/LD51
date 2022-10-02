@@ -2,13 +2,15 @@ extends Control
 
 export var lerp_weight := 0.2
 
+var _displayed_score : float
+var _displayed_resources : float
+
 onready var _score_label := find_node("ScoreLabel")
 onready var _resources_label := find_node("ResourcesLabel")
 onready var _base_health_label := find_node("BaseHealthLabel")
 onready var _meteor_bar := find_node("MeteorProgressBar")
+onready var _anim_player := $AnimationPlayer
 
-var _displayed_score : float
-var _displayed_resources : float
 
 func _ready():
 	_displayed_score = 0
@@ -28,3 +30,5 @@ func _process(_delta):
 	_resources_label.text = "Resources: %d" % round(_displayed_resources)
 	_base_health_label.text = "Base Health: %d" % Global.base_health
 	_meteor_bar.value = Global.time_to_impact
+	
+	_anim_player.play("Warning" if Global.time_to_impact >= 9.0 else "RESET")
