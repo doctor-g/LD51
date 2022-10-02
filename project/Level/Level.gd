@@ -45,6 +45,9 @@ const _PATH := [
 const width := 11
 const height := 11
 
+var is_running := true
+
+var _base : Spatial
 var _path := Path.new()
 var _preview_mesh : Spatial
 var _defenses := []
@@ -86,12 +89,15 @@ func _enter_tree():
 			tile.connect("mouse_moved", self, "_on_Tile_mouse_moved")
 			
 				
-	var base : Spatial = preload("res://Level/Base.tscn").instance()
-	base.translation= Vector3(0, 0, min_z-1)
-	add_child(base)
+	_base = preload("res://Level/Base.tscn").instance()
+	_base.translation= Vector3(0, 0, min_z-1)
+	add_child(_base)
 	
 
 func _ready():
+	# warning-ignore:return_value_discarded
+	_base.connect("destroyed", self, "_on_Base_destroyed")
+	
 	# warning-ignore:return_value_discarded
 	Global.connect("meteor_timer_timeout", self, "_on_MeteorTimer_timeout")	
 	
@@ -124,6 +130,13 @@ func _process(_delta):
 		elif Input.is_action_just_pressed("meteor"):
 			if _defenses.size()>0:
 				_launch_meteor()
+
+
+func _on_Base_destroyed()->void:
+	is_running = false
+	var loss_control := preload("res://UI/LossControl.tscn").instance()
+	add_child(loss_control)
+	get_tree().paused = true
 
 
 func _on_SpawnTimer_timeout():

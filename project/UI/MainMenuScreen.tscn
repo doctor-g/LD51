@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://UI/game.theme" type="Theme" id=1]
 [ext_resource path="res://UI/SpaceMono-Regular.ttf" type="DynamicFontData" id=2]
 [ext_resource path="res://UI/MainMenuScreen.gd" type="Script" id=3]
+[ext_resource path="res://UI/PauseMenu.tscn" type="PackedScene" id=4]
 [ext_resource path="res://UI/menu.ogg" type="AudioStream" id=5]
 
 [sub_resource type="DynamicFont" id=1]
@@ -31,9 +32,9 @@ anchor_bottom = 1.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
 margin_left = 257.0
-margin_top = 131.0
+margin_top = 108.0
 margin_right = 767.0
-margin_bottom = 469.0
+margin_bottom = 492.0
 
 [node name="TitleLabel" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_right = 510.0
@@ -55,7 +56,13 @@ Use space to switch input modes.
 margin_top = 296.0
 margin_right = 510.0
 margin_bottom = 338.0
-text = "Let's Do This"
+text = "Play"
+
+[node name="OptionsButton" type="Button" parent="CenterContainer/VBoxContainer"]
+margin_top = 342.0
+margin_right = 510.0
+margin_bottom = 384.0
+text = "Options"
 
 [node name="BottomLabel" type="Label" parent="."]
 anchor_left = 0.5
@@ -73,4 +80,7 @@ align = 1
 stream = ExtResource( 5 )
 bus = "Music"
 
+[node name="PauseMenu" parent="." instance=ExtResource( 4 )]
+
 [connection signal="pressed" from="CenterContainer/VBoxContainer/PlayButton" to="." method="_on_PlayButton_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/OptionsButton" to="." method="_on_OptionsButton_pressed"]
