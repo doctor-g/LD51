@@ -254,7 +254,7 @@ func _on_Meteor_struck(meteor:Spatial, defense_index:int)->void:
 
 
 func _on_Sphere_destroyed(sphere:Spatial)->void:
-	_spawn_shards(3, sphere.global_translation)
+	_spawn_shards(sphere.shards, sphere.global_translation)
 	var explosion :CPUParticles = preload("res://Enemies/EnemyExplosion.tscn").instance()
 	explosion.one_shot = true
 	add_child(explosion)

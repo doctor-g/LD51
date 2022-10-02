@@ -5,6 +5,7 @@ signal destroyed(position)
 export var max_health := 100.0
 export var health := 100.0
 export var points := 100
+export var shards := 3
 
 var _destroyed := false
 
