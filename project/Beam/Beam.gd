@@ -19,10 +19,13 @@ func _random_vector()->Vector3:
 	return Vector3(randf(), randf(), randf()).normalized()
 
 
-func _on_Beam_body_exited(body:RigidBody):
-	if body is Shard and _attracting_shards.has(body):
+func _on_Beam_body_exited(body:PhysicsBody):
+	if body is Shard:
+		# If for some reason we never tracked this one, no problem, ignore it.
 		# warning-ignore:return_value_discarded
 		_attracting_shards.erase(body)
+		
+		# No matter what, turn it back into rigid mode.
 		body.mode = RigidBody.MODE_RIGID
 	
 	if _attracting_shards.size()==0:
