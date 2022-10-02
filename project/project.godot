@@ -20,7 +20,7 @@ _global_script_class_icons={
 
 [application]
 
-config/name="LD51"
+config/name="Base Defense"
 run/main_scene="res://UI/SplashOverlay.tscn"
 config/icon="res://icon.png"
 

@@ -40,7 +40,7 @@ margin_bottom = 492.0
 margin_right = 510.0
 margin_bottom = 96.0
 custom_fonts/font = SubResource( 1 )
-text = "Blocktower"
+text = "Base Defense"
 
 [node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
 margin_top = 100.0
