@@ -190,7 +190,7 @@ func _on_Tile_clicked(tile:Spatial)->void:
 	
 	var TURRET_COST := 300
 	# TODO: Extract cost
-	if not tile.has_defense() and Global.resources > TURRET_COST:
+	if not tile.has_defense() and Global.resources >= TURRET_COST:
 		var turret : Spatial = preload("res://Defenses/Turret.tscn").instance()
 		turret.rotation = _preview_mesh.rotation
 		tile.add_defense(turret)
