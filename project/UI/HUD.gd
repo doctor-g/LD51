@@ -11,8 +11,8 @@ var _displayed_score : float
 var _displayed_resources : float
 
 func _ready():
-	_displayed_score = Global.score
-	_displayed_resources = Global.resources
+	_displayed_score = 0
+	_displayed_resources = Global.DEFAULT_RESOURCES
 
 
 func _process(_delta):
