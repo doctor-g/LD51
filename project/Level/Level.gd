@@ -1,6 +1,8 @@
 extends Spatial
 tool
 
+const _Sphere := preload("res://Enemies/Sphere.tscn")
+
 enum Mode { BEAM, DEFENSE }
 
 const _Tile := preload("res://Level/Tile.tscn")
@@ -139,10 +141,9 @@ func _on_Base_destroyed()->void:
 	get_tree().paused = true
 
 
-func _on_SpawnTimer_timeout():
+func _spawn_sphere(sphere:Spatial):
 	var path_follow := PathFollow.new()
 	_path.add_child(path_follow)
-	var sphere :Spatial = preload("res://Enemies/Sphere.tscn").instance()
 	path_follow.add_child(sphere)
 	_enemies.append(sphere)
 	# warning-ignore:return_value_discarded
@@ -151,8 +152,9 @@ func _on_SpawnTimer_timeout():
 	sphere.connect("tree_exiting", self, "_on_Sphere_tree_exiting", [sphere])
 
 	var tween := get_tree().create_tween()
+	var duration :float = _path.curve.get_baked_length() / sphere.speed
 	# warning-ignore:return_value_discarded
-	tween.tween_property(path_follow, 'unit_offset', 1.0, 5.0)
+	tween.tween_property(path_follow, 'unit_offset', 1.0, duration)
 
 
 func _on_Tile_mouse_entered(tile:Spatial)->void:
@@ -287,3 +289,42 @@ func _on_Tile_mouse_moved(position:Vector3)->void:
 	_mouse_pos = position
 	if _mode==Mode.BEAM:
 		_beam.translation = position
+
+
+func _on_SpeedySphereTimer_timeout():
+	var sphere := _Sphere.instance()
+	sphere.color = Color.red
+	sphere.speed = 5
+	sphere.max_health = 30
+	sphere.shards = 1
+	sphere.points = 30
+	_spawn_sphere(sphere)
+	_speed_up($SpeedySphereTimer)
+
+
+func _speed_up(timer:Timer)->void:
+	# Make the timer about 5% faster
+	timer.wait_time = max(1.0, 0.95 * timer.wait_time)
+	timer.start()
+
+
+func _on_BigSlowTimer_timeout():
+	var sphere := _Sphere.instance()
+	sphere.color = Color.rebeccapurple
+	sphere.speed = 2.5
+	sphere.max_health = 100
+	sphere.shards = 2
+	sphere.points = 100
+	_spawn_sphere(sphere)
+	_speed_up($BigSlowTimer)
+
+
+func _on_BehemothTimer_timeout():
+	var sphere := _Sphere.instance()
+	sphere.color = Color.peru
+	sphere.speed = 1.5
+	sphere.max_health = 500
+	sphere.shards = 5
+	sphere.points = 500
+	_spawn_sphere(sphere)
+	_speed_up($BehemothTimer)

@@ -6,15 +6,18 @@
 [sub_resource type="Shader" id=5]
 code = "shader_type spatial;
 
+uniform vec3 color = vec3(1.0,1.0,1.0);
 uniform float pulse_speed = 0.0;
 
 void fragment() {
-	ALBEDO = vec3(1.0 - 0.5 * abs(sin(pulse_speed * TIME)), 0.0, 0.0);
+	float pulse_amount = 0.5 * abs(sin(pulse_speed * TIME));
+	ALBEDO = vec3(color.r - pulse_amount, color.g - pulse_amount, color.b - pulse_amount);
 }"
 
 [sub_resource type="ShaderMaterial" id=6]
 resource_local_to_scene = true
 shader = SubResource( 5 )
+shader_param/color = Vector3( 1, 1, 1 )
 shader_param/pulse_speed = 0.0
 
 [sub_resource type="SphereShape" id=1]
