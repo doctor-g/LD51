@@ -39,8 +39,9 @@ func _physics_process(delta):
 			add_child(particles)
 			particles.global_translation = shard.global_translation
 			particles.one_shot = true
+			Global.resources += shard.resources
+			Global.score += shard.points
 			shard.queue_free()
-			Global.resources += 50
 			yield(get_tree().create_timer(0.5), "timeout")
 			particles.queue_free()
 
