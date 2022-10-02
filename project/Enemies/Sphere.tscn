@@ -3,18 +3,19 @@
 [ext_resource path="res://Enemies/Sphere.gd" type="Script" id=1]
 [ext_resource path="res://Enemies/spawn.wav" type="AudioStream" id=2]
 
-[sub_resource type="Shader" id=2]
+[sub_resource type="Shader" id=5]
 code = "shader_type spatial;
 
-const float anim_speed = 6.0;
+uniform float pulse_speed = 0.0;
 
 void fragment() {
-	float intensity = 0.5+0.5*abs(sin(TIME*anim_speed));
-	ALBEDO = vec3(intensity, intensity/5.0, 0);
+	ALBEDO = vec3(1.0 - 0.5 * abs(sin(pulse_speed * TIME)), 0.0, 0.0);
 }"
 
-[sub_resource type="ShaderMaterial" id=3]
-shader = SubResource( 2 )
+[sub_resource type="ShaderMaterial" id=6]
+resource_local_to_scene = true
+shader = SubResource( 5 )
+shader_param/pulse_speed = 0.0
 
 [sub_resource type="SphereShape" id=1]
 radius = 0.5
@@ -27,7 +28,7 @@ script = ExtResource( 1 )
 [node name="CSGSphere" type="CSGSphere" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 radius = 0.5
-material = SubResource( 3 )
+material = SubResource( 6 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
